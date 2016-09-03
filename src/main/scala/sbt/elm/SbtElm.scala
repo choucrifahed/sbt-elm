@@ -10,102 +10,99 @@ import scala.collection.mutable.ArrayBuffer
 import scala.util.{Failure, Success, Try}
 
 
-object Import {
-
-  object ElmKeys {
-    /*
-      Usage: elm-make [FILES...] [--output FILE] [--yes] [--report FORMAT] [--warn]
-                      [--docs FILE] [--prepublish] [--prepublish-core]
-        build Elm projects
-
-      Available options:
-        -h,--help                Show this help text
-        --output FILE            Write result to the given .html or .js FILE.
-        --yes                    Reply 'yes' to all automated prompts.
-        --report FORMAT          Format of error and warning reports (e.g.
-                                 --report=json)
-        --warn                   Report warnings to improve code quality.
-        --docs FILE              Write documentation to FILE as JSON.
-
-      Examples:
-        elm-make Main.elm                     # compile to HTML in index.html
-        elm-make Main.elm --output main.html  # compile to HTML in main.html
-        elm-make Main.elm --output elm.js     # compile to JS in elm.js
-        elm-make Main.elm --warn              # compile and report warnings
-
-      Full guide to using elm-make at <https://github.com/elm-lang/elm-make>
-     */
-    val elmMake = TaskKey[Seq[File]]("elm-make", "Compile an Elm file or project into JS or HTML.")
-
-    /*
-      Usage: elm-package COMMAND
-        install and publish elm packages
-
-      Available commands:
-        install                  Install packages to use locally
-        publish                  Publish your package to the central catalog
-        bump                     Bump version numbers based on API changes
-        diff                     Get differences between two APIs
-
-      To learn more about a particular command run:
-        elm-package COMMAND --help
-     */
-    val elmPackage = TaskKey[Unit]("elm-package", "Manage Elm packages from <http://package.elm-lang.org>.")
-
-    /*
-      Interactive development tool that makes it easy to develop and debug Elm
-      programs.
-          Read more about it at <https://github.com/elm-lang/elm-reactor>.
-
-      Common flags:
-      -a --address=ADDRESS  set the address of the server (e.g. look into 0.0.0.0
-                            if you want to try stuff on your phone)
-      -p --port=INT         set the port of the reactor (default: 8000)
-      -h --help             Display help message
-      -v --version          Print version information
-         --numeric-version  Print just the version number
-     */
-    val elmReactor = TaskKey[Unit]("elm-reactor", "Develop with compile-on-refresh and time-travel debugging for Elm.")
-
-    /*
-      Read-eval-print-loop (REPL) for digging deep into Elm projects.
-      More info at <https://github.com/elm-lang/elm-repl#elm-repl>
-
-      Common flags:
-      -c --compiler=FILE     Provide a path to a specific version of elm-make.
-      -i --interpreter=FILE  Provide a path to a specific JavaScript interpreter
-                             (e.g. node, nodejs, ...).
-      -h --help              Display help message
-      -v --version           Print version information
-         --numeric-version   Print just the version number
-     */
-    val elmRepl = TaskKey[Unit]("elm-repl", "Elm REPL for running individual expressions.")
-
-    val elmExecutable = SettingKey[String]("elm-executable", "The Elm executable.")
-    val elmOutput = SettingKey[File]("elm-output-file", "Elm output file.")
-    val elmOptions = SettingKey[Seq[String]]("elm-options", "Elm executable options.")
-  }
-
-}
-
 object SbtElm extends AutoPlugin {
+
+  object autoImport {
+
+    object ElmKeys {
+      /*
+        Usage: elm-make [FILES...] [--output FILE] [--yes] [--report FORMAT] [--warn]
+                        [--docs FILE] [--prepublish] [--prepublish-core]
+          build Elm projects
+
+        Available options:
+          -h,--help                Show this help text
+          --output FILE            Write result to the given .html or .js FILE.
+          --yes                    Reply 'yes' to all automated prompts.
+          --report FORMAT          Format of error and warning reports (e.g.
+                                   --report=json)
+          --warn                   Report warnings to improve code quality.
+          --docs FILE              Write documentation to FILE as JSON.
+
+        Examples:
+          elm-make Main.elm                     # compile to HTML in index.html
+          elm-make Main.elm --output main.html  # compile to HTML in main.html
+          elm-make Main.elm --output elm.js     # compile to JS in elm.js
+          elm-make Main.elm --warn              # compile and report warnings
+
+        Full guide to using elm-make at <https://github.com/elm-lang/elm-make>
+       */
+      val elmMake = TaskKey[Seq[File]]("elm-make", "Compile an Elm file or project into JS or HTML.")
+
+      /*
+        Usage: elm-package COMMAND
+          install and publish elm packages
+
+        Available commands:
+          install                  Install packages to use locally
+          publish                  Publish your package to the central catalog
+          bump                     Bump version numbers based on API changes
+          diff                     Get differences between two APIs
+
+        To learn more about a particular command run:
+          elm-package COMMAND --help
+       */
+      val elmPackage = TaskKey[Unit]("elm-package", "Manage Elm packages from <http://package.elm-lang.org>.")
+
+      /*
+        Interactive development tool that makes it easy to develop and debug Elm
+        programs.
+            Read more about it at <https://github.com/elm-lang/elm-reactor>.
+
+        Common flags:
+        -a --address=ADDRESS  set the address of the server (e.g. look into 0.0.0.0
+                              if you want to try stuff on your phone)
+        -p --port=INT         set the port of the reactor (default: 8000)
+        -h --help             Display help message
+        -v --version          Print version information
+           --numeric-version  Print just the version number
+       */
+      val elmReactor = TaskKey[Unit]("elm-reactor", "Develop with compile-on-refresh and time-travel debugging for Elm.")
+
+      /*
+        Read-eval-print-loop (REPL) for digging deep into Elm projects.
+        More info at <https://github.com/elm-lang/elm-repl#elm-repl>
+
+        Common flags:
+        -c --compiler=FILE     Provide a path to a specific version of elm-make.
+        -i --interpreter=FILE  Provide a path to a specific JavaScript interpreter
+                               (e.g. node, nodejs, ...).
+        -h --help              Display help message
+        -v --version           Print version information
+           --numeric-version   Print just the version number
+       */
+      val elmRepl = TaskKey[Unit]("elm-repl", "Elm REPL for running individual expressions.")
+
+      val elmExecutable = SettingKey[String]("elm-executable", "The Elm executable.")
+      val elmOutput = SettingKey[File]("elm-output-file", "Elm output file.")
+      val elmOptions = SettingKey[Seq[String]]("elm-options", "Elm executable options.")
+    }
+
+  }
 
   override def requires = SbtWeb
 
   override def trigger = AllRequirements
 
-  val autoImport = Import
-
   import SbtWeb.autoImport._
   import WebKeys._
   import autoImport.ElmKeys._
 
-
   val baseElmSettings = Seq(
     // Elm Make
-    elmExecutable := "elm-make",
-    elmOptions := Seq("--warn"),
-    elmOutput := (resourceManaged in elmMake).value / "js" / "main.js",
+    elmExecutable in elmMake := "elm-make",
+    elmOptions in elmMake := Seq("--warn", "--yes"),
+    elmOutput in elmMake := (resourceManaged in elmMake).value / "js" / "main.js",
     includeFilter in elmMake := "*.elm",
     sources in elmMake := ((sourceDirectories in elmMake).value **
       ((includeFilter in elmMake).value -- (excludeFilter in elmMake).value)).get,
@@ -113,7 +110,8 @@ object SbtElm extends AutoPlugin {
       val srcs = (sources in elmMake).value
 
       val hash = OpInputHash.hashString(
-        ((elmExecutable.value +: elmOptions.value) ++ srcs :+ elmOutput.value).mkString("\0"))
+        (((elmExecutable in elmMake).value +: (elmOptions in elmMake).value)
+          ++ srcs :+ (elmOutput in elmMake).value).mkString("\0"))
 
       implicit val opInputHasher = OpInputHasher[Unit](_ => hash)
 
@@ -122,29 +120,44 @@ object SbtElm extends AutoPlugin {
         case _ =>
           streams.value.log.info(s"Elm compiling on ${srcs.length} source(s)")
 
-          val command = elmExecutable.value :: elmOptions.value.toList ++
-            ("--output" :: elmOutput.value.absolutePath :: srcs.getPaths.toList)
+          val command = ((elmExecutable in elmMake).value +: (elmOptions in elmMake).value) ++
+            ("--output" :: (elmOutput in elmMake).value.absolutePath :: srcs.getPaths.toList)
 
           val problems = doCompile(command, srcs)
           CompileProblems.report((reporter in elmMake).value, problems)
 
-          (Map(() -> (if (problems.nonEmpty) OpFailure else OpSuccess(srcs.toSet, Set(elmOutput.value)))), ())
+          (Map(() ->
+            (if (problems.nonEmpty) OpFailure
+            else OpSuccess(srcs.toSet, Set((elmOutput in elmMake).value)))), ())
       }
 
       outs.toSeq
     },
 
     // Elm Package
-    (elmExecutable in elmPackage) := "elm-package",
+    elmExecutable in elmPackage := "elm-package",
+    elmOptions in elmPackage := Nil,
+    elmPackage := {
+      streams.value.log.info(s"Starting ${elmExecutable in elmPackage}")
+      val command = (elmExecutable in elmPackage).value +: (elmOptions in elmPackage).value
+      Process(command).run(true).exitValue()
+    },
 
     // Elm Reactor
-    (elmExecutable in elmReactor) := "elm-reactor",
+    elmExecutable in elmReactor := "elm-reactor",
+    elmOptions in elmReactor := Nil,
+    elmReactor := {
+      streams.value.log.info(s"Starting ${elmExecutable in elmReactor}")
+      val command = (elmExecutable in elmReactor).value +: (elmOptions in elmReactor).value
+      Process(command).run(true).exitValue()
+    },
 
     // Elm REPL
-    (elmExecutable in elmRepl) := "elm-repl",
+    elmExecutable in elmRepl := "elm-repl",
+    elmOptions in elmRepl := Nil,
     elmRepl := {
-      streams.value.log.info(s"Starting ${elmExecutable.value} with ${(sources in elmMake).value.length} source files...")
-      val command = (elmExecutable in elmRepl).value :: (sources in elmMake).value.getPaths.toList
+      streams.value.log.info(s"Starting ${elmExecutable in elmRepl}")
+      val command = (elmExecutable in elmRepl).value +: (elmOptions in elmRepl).value
       Process(command).run(true).exitValue()
     },
 
@@ -156,6 +169,8 @@ object SbtElm extends AutoPlugin {
       inConfig(TestAssets)(baseElmSettings ++ Seq(
         resourceManaged in elmMake := webTarget.value / "elm" / "test")) ++ Seq(
       elmMake := (elmMake in Assets).value,
+      elmPackage := (elmPackage in Assets).value,
+      elmReactor := (elmReactor in Assets).value,
       elmRepl := (elmRepl in Assets).value)
 
   def doCompile(command: Seq[String], sourceFiles: Seq[File]): Seq[Problem] = {

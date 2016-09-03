@@ -22,7 +22,7 @@ licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
 bintrayOrganization in bintray := None
 
-pomExtra := (
+pomExtra :=
   <scm>
     <url>git@github.com:choucrifahed/sbt-elm.git</url>
     <connection>scm:git:git@github.com:choucrifahed/sbt-elm.git</connection>
@@ -34,9 +34,7 @@ pomExtra := (
         <url>https://github.com/choucrifahed</url>
       </developer>
     </developers>
-  )
 
 ScriptedPlugin.scriptedSettings
 
-scriptedLaunchOpts ++= Seq(
-  "-Dplugin.version=" + version.value)
+scriptedLaunchOpts ++= Seq("-Dplugin.version=" + version.value)
