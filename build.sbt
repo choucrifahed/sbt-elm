@@ -1,5 +1,3 @@
-import bintray.Keys._
-
 sbtPlugin := true
 
 organization := "io.finstack"
@@ -12,15 +10,7 @@ scalacOptions += "-feature"
 
 addSbtPlugin("com.typesafe.sbt" % "sbt-web" % "1.4.0")
 
-publishMavenStyle := false
-
-bintrayPublishSettings
-
-repository in bintray := "sbt-plugins"
-
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
-
-bintrayOrganization in bintray := None
 
 pomExtra :=
   <scm>
