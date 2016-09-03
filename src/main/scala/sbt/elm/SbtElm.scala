@@ -138,7 +138,6 @@ object SbtElm extends AutoPlugin {
     elmExecutable in elmPackage := "elm-package",
     elmOptions in elmPackage := Nil,
     elmPackage := {
-      streams.value.log.info(s"Starting ${elmExecutable in elmPackage}")
       val command = (elmExecutable in elmPackage).value +: (elmOptions in elmPackage).value
       Process(command).run(true).exitValue()
     },
@@ -147,7 +146,6 @@ object SbtElm extends AutoPlugin {
     elmExecutable in elmReactor := "elm-reactor",
     elmOptions in elmReactor := Nil,
     elmReactor := {
-      streams.value.log.info(s"Starting ${elmExecutable in elmReactor}")
       val command = (elmExecutable in elmReactor).value +: (elmOptions in elmReactor).value
       Process(command).run(true).exitValue()
     },
@@ -156,7 +154,6 @@ object SbtElm extends AutoPlugin {
     elmExecutable in elmRepl := "elm-repl",
     elmOptions in elmRepl := Nil,
     elmRepl := {
-      streams.value.log.info(s"Starting ${elmExecutable in elmRepl}")
       val command = (elmExecutable in elmRepl).value +: (elmOptions in elmRepl).value
       Process(command).run(true).exitValue()
     },
