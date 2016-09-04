@@ -1,3 +1,7 @@
+lazy val root = project.in(file(".")).dependsOn(elmPlugin)
+
+lazy val elmPlugin = file("../../..")
+
 // The Play plugin
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.5.6")
 
