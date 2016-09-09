@@ -41,4 +41,4 @@ Run `scripted` to run the plugin test suite (which is barely existent at this po
 
 ## Special Thanks
 
-To the team behind the [SBT Purescript](https://github.com/eamelink/sbt-purescript) for heavily inspiring this plugin.
+To the team behind [sbt-purescript](https://github.com/eamelink/sbt-purescript) for heavily inspiring this plugin.
