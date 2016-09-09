@@ -1,9 +1,22 @@
-This is your new Play application
-=================================
+Play with Elm sample application
+================================
 
-This file will be packaged with your application when using `activator dist`.
+This application shows a simple counter maintained server-side and incremented client-side by Elm.
+
+You can run the app in developer mode (`>sbt run`), then modify any listed file below and refresh your browser to see modifications.
 
 There are several demonstration files available in this template.
+
+Elm Application
+===============
+
+- ServerCounter.elm:
+
+  Demonstrates how Elm code can call a Play controller.
+
+- main.scala.html:
+
+  Shows how a Play Twirl template can embed an Elm app, thus mixing UI rendered server and client side.
 
 Controllers
 ===========

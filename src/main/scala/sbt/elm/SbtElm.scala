@@ -103,7 +103,7 @@ object SbtElm extends AutoPlugin {
     // Elm Make
     elmExecutable in elmMake := "elm-make",
     elmOptions in elmMake := Seq("--warn", "--yes"),
-    elmOutput in elmMake := (resourceManaged in elmMake).value / "js" / "main.js",
+    elmOutput in elmMake := (resourceManaged in elmMake).value / "js" / "elmMain.js",
     includeFilter in elmMake := "*.elm",
     sources in elmMake := ((sourceDirectories in elmMake).value **
       ((includeFilter in elmMake).value -- (excludeFilter in elmMake).value)).get,
