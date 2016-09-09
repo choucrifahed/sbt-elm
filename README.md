@@ -3,7 +3,7 @@
 sbt-elm is a Scala Build Tool (SBT) plugin that integrates [Elm](http://elm-lang.org/) projects in Scala/Play projects.
 It uses and follows the conventions of [sbt-web](https://github.com/sbt/sbt-web).
 
-# Usage
+## Usage
 
 To use a stable release, add the following to the `project/plugins.sbt` of your project:
 
