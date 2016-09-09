@@ -52,7 +52,8 @@ object SbtElm extends AutoPlugin {
         To learn more about a particular command run:
           elm-package COMMAND --help
        */
-      val elmPackage = TaskKey[Unit]("elm-package", "Manage Elm packages from <http://package.elm-lang.org>.")
+      // FIXME this task is useless if one cannot pass parameters
+      // val elmPackage = InputKey[Unit]("elm-package", "Manage Elm packages from <http://package.elm-lang.org>.")
 
       /*
         Interactive development tool that makes it easy to develop and debug Elm
@@ -83,9 +84,9 @@ object SbtElm extends AutoPlugin {
        */
       val elmRepl = TaskKey[Unit]("elm-repl", "Elm REPL for running individual expressions.")
 
-      val elmExecutable = SettingKey[String]("elm-executable", "The Elm executable.")
-      val elmOutput = SettingKey[File]("elm-output-file", "Elm output file.")
-      val elmOptions = SettingKey[Seq[String]]("elm-options", "Elm executable options.")
+      val elmExecutable = settingKey[String]("The Elm executable.")
+      val elmOutput = settingKey[File]("Elm output file.")
+      val elmOptions = settingKey[Seq[String]]("Elm executable options.")
     }
 
   }
@@ -135,12 +136,14 @@ object SbtElm extends AutoPlugin {
     },
 
     // Elm Package
-    elmExecutable in elmPackage := "elm-package",
-    elmOptions in elmPackage := Nil,
-    elmPackage := {
-      val command = (elmExecutable in elmPackage).value +: (elmOptions in elmPackage).value
+    //elmExecutable in elmPackage := "elm-package",
+    //elmOptions in elmPackage := Nil,
+    // FIXME no clue of how input can be read!!!
+    /*elmPackage := {
+      val args = Def.spaceDelimited("<args>").parsed
+      val command = ((elmExecutable in elmPackage).value +: (elmOptions in elmPackage).value) ++ args
       Process(command).run(true).exitValue()
-    },
+    },*/
 
     // Elm Reactor
     elmExecutable in elmReactor := "elm-reactor",
@@ -166,7 +169,7 @@ object SbtElm extends AutoPlugin {
       inConfig(TestAssets)(baseElmSettings ++ Seq(
         resourceManaged in elmMake := webTarget.value / "elm" / "test")) ++ Seq(
       elmMake := (elmMake in Assets).value,
-      elmPackage := (elmPackage in Assets).value,
+      // FIXME elmPackage := (elmPackage in Assets).value,
       elmReactor := (elmReactor in Assets).value,
       elmRepl := (elmRepl in Assets).value)
 
