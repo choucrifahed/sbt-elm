@@ -1,6 +1,7 @@
 sbtPlugin := true
 
 organization := "io.finstack"
+bintrayOrganization := Some("finstack")
 
 name := "sbt-elm"
 
