@@ -1,11 +1,12 @@
 sbtPlugin := true
 
 organization := "io.finstack"
+
 bintrayOrganization := Some("finstack")
 
 name := "sbt-elm"
 
-version := "0.1.0-SNAPSHOT"
+version := "0.1.0"
 
 scalacOptions += "-feature"
 
