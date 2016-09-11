@@ -1,0 +1,6 @@
+Initial release:
+
+* Publication of current release notes from `notes/`
+* Append notes/about.markdown for linking back to project home
+* Allow launching elm-make, elm-reactor and elm-repl from SBT command line
+* Provide one plain Scala example project and one Play example project
