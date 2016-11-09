@@ -164,14 +164,20 @@ object SbtElm extends AutoPlugin {
     resourceGenerators <+= elmMake)
 
   override def projectSettings =
-    inConfig(Assets)(baseElmSettings ++ Seq(
-      resourceManaged in elmMake := webTarget.value / "elm" / "main")) ++
-      inConfig(TestAssets)(baseElmSettings ++ Seq(
-        resourceManaged in elmMake := webTarget.value / "elm" / "test")) ++ Seq(
+    inConfig(Assets)(
+      baseElmSettings ++ Seq(
+        resourceManaged in elmMake := webTarget.value / "elm" / "main"
+      )
+    )++ /* inConfig(TestAssets)(
+      baseElmSettings ++ Seq(
+        resourceManaged in elmMake := webTarget.value / "elm" / "test"
+      )
+    ) ++ */ Seq(
       elmMake := (elmMake in Assets).value,
       // FIXME elmPackage := (elmPackage in Assets).value,
       elmReactor := (elmReactor in Assets).value,
-      elmRepl := (elmRepl in Assets).value)
+      elmRepl := (elmRepl in Assets).value
+    )
 
   def doCompile(command: Seq[String], sourceFiles: Seq[File]): Seq[Problem] = {
     val (buffer, pscLogger) = logger
