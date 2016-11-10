@@ -7,7 +7,7 @@ It uses and follows the conventions of [sbt-web](https://github.com/sbt/sbt-web)
 
 To use a stable release, add the following to the `project/plugins.sbt` of your project:
 
-    addSbtPlugin("io.finstack" % "sbt-elm" % "0.1.0")
+    addSbtPlugin("io.finstack" % "sbt-elm" % "0.1.1")
 
 To use the latest from Github, add the following to the `project/plugins.sbt` of your project:
 
@@ -32,6 +32,8 @@ There are other tasks available:
  * `elm-repl` task will run the Elm interpreter, with your sources loaded.
 
 However, [Elm Package](https://github.com/elm-lang/elm-package) is not yet available from SBT to install packages, bump versions or publish your packages.
+
+Also, the current version of the plugin does not support multiple Elm assets in different Play sub-modules.
 
 Check the examples folder for example projects that use this plugin.
 

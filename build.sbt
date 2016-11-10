@@ -6,7 +6,7 @@ bintrayOrganization := Some("finstack")
 
 name := "sbt-elm"
 
-version := "0.2.0-SNAPSHOT"
+version := "0.1.1-SNAPSHOT"
 
 scalacOptions += "-feature"
 

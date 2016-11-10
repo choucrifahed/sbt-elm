@@ -1,0 +1,3 @@
+* Fix of issue [sbt 'Duplicate mappings' error](https://github.com/choucrifahed/sbt-elm/issues/3)
+* Update to SBT 0.13.13 and Scala 2.11.8
+* Add [sbt-updates](https://github.com/rtimush/sbt-updates) plugin

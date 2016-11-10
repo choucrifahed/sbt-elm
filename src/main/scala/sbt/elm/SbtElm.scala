@@ -168,7 +168,9 @@ object SbtElm extends AutoPlugin {
       baseElmSettings ++ Seq(
         resourceManaged in elmMake := webTarget.value / "elm" / "main"
       )
-    )++ /* inConfig(TestAssets)(
+    ) ++
+    // FIXME include elm-test in test command
+    /* inConfig(TestAssets)(
       baseElmSettings ++ Seq(
         resourceManaged in elmMake := webTarget.value / "elm" / "test"
       )
