@@ -161,7 +161,7 @@ object SbtElm extends AutoPlugin {
       Process(command).run(true).exitValue()
     },
 
-    resourceGenerators <+= elmMake)
+    resourceGenerators += elmMake.taskValue)
 
   override def projectSettings =
     inConfig(Assets)(
