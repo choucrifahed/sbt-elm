@@ -24,7 +24,7 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
 
       status(home) mustBe OK
       contentType(home) mustBe Some("text/html")
-      contentAsString(home) must include ("Your new application is ready.")
+      contentAsString(home) must include ("Elm.ServerCounter.embed")
     }
 
   }
@@ -32,9 +32,9 @@ class ApplicationSpec extends PlaySpec with OneAppPerTest {
   "CountController" should {
 
     "return an increasing count" in {
-      contentAsString(route(app, FakeRequest(GET, "/count")).get) mustBe "0"
-      contentAsString(route(app, FakeRequest(GET, "/count")).get) mustBe "1"
-      contentAsString(route(app, FakeRequest(GET, "/count")).get) mustBe "2"
+      contentAsString(route(app, FakeRequest(GET, "/count")).get) mustBe "{ \"counter\": 0 }"
+      contentAsString(route(app, FakeRequest(GET, "/count")).get) mustBe "{ \"counter\": 1 }"
+      contentAsString(route(app, FakeRequest(GET, "/count")).get) mustBe "{ \"counter\": 2 }"
     }
 
   }
