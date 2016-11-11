@@ -33,7 +33,25 @@ There are other tasks available:
 
 However, [Elm Package](https://github.com/elm-lang/elm-package) is not yet available from SBT to install packages, bump versions or publish your packages.
 
-Also, the current version of the plugin does not support multiple Elm assets in different Play sub-modules.
+## Multimodule play project
+
+Unfortunately, the current version of the plugin does not support multiple Play sub-modules. Therefore you can only have SbtElm enabled for a single module (see #2 for more details). The example below shows how to do this:
+
+```
+
+// in project/plugins.sbt: addSbtPlugin("io.finstack" % "sbt-elm" % "x.y.z")
+
+lazy val playModuleElm = project
+  .in(file("playModuleElm"))
+  .enablePlugins(PlayScala)
+  ...
+  
+lazy val playModule2 = project
+  .in(file("playModule2"))
+  .enablePlugins(PlayScala)
+  .disablePlugins(SbtElm)
+  ...
+``` 
 
 Check the examples folder for example projects that use this plugin.
 
