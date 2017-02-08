@@ -1,16 +1,14 @@
 module ServerCounter exposing (..)
 
 import Html exposing (..)
-import Html.App as App
 import Html.Events exposing (onClick)
 import Http
 import Json.Decode as Json
-import Task
 
 
-main : Program Never
+main : Program Never Model Msg
 main =
-    App.program
+    program
         { init = init
         , view = view
         , update = update
@@ -39,8 +37,7 @@ init =
 
 type Msg
     = IncrementServerCounter
-    | ServerCounterUpdated Int
-    | ServerCounterUpdateFailed Http.Error
+    | ServerCounterUpdated (Result Http.Error Int)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -49,10 +46,10 @@ update msg model =
         IncrementServerCounter ->
             ( model, incrementCounterServer )
 
-        ServerCounterUpdated newCounter ->
+        ServerCounterUpdated (Ok newCounter) ->
             ( { model | counter = newCounter, error = Nothing }, Cmd.none )
 
-        ServerCounterUpdateFailed newError ->
+        ServerCounterUpdated (Err newError) ->
             ( { model | error = Just <| toString newError }, Cmd.none )
 
 
@@ -84,7 +81,7 @@ subscriptions model =
 
 incrementCounterServer : Cmd Msg
 incrementCounterServer =
-    Task.perform ServerCounterUpdateFailed ServerCounterUpdated (Http.get decodeCounter "/count")
+    Http.send ServerCounterUpdated (Http.get "/count" decodeCounter)
 
 
 decodeCounter : Json.Decoder Int
