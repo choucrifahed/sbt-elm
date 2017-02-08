@@ -52,9 +52,19 @@ lazy val playModule2 = project
   .enablePlugins(PlayScala)
   .disablePlugins(SbtElm)
   ...
-``` 
+```
+
+## Examples
 
 Check the examples folder for example projects that use this plugin.
+
+## Adding arguments to elm-make
+
+This setting for example enables the debugger (Elm 0.18+)
+
+```
+(ElmKeys.elmOptions in ElmKeys.elmMake in Assets) ++= Seq("--debug")
+```
 
 ## Hacking on the plugin
 
