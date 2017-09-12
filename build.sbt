@@ -12,7 +12,7 @@ name := "sbt-elm"
 
 scalacOptions += "-feature"
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-web" % "1.4.0")
+addSbtPlugin("com.typesafe.sbt" % "sbt-web" % "1.4.3")
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
@@ -69,11 +69,13 @@ def setVersionOnly(selectVersion: sbtrelease.Versions => String): ReleaseStep = 
 
 lazy val setReleaseVersion: ReleaseStep = setVersionOnly(_._1)
 
-releaseVersion := releaseVersionBump(bumper => {
-  (ver: String) => sbtrelease.Version(ver)
+releaseVersion := { (ver: String) =>
+  sbtrelease
+    .Version(ver)
     .map(_.withoutQualifier)
-    .map(_.bump(bumper).string).getOrElse(versionFormatError)
-}).value
+    .map(_.bumpBugfix.string)
+    .getOrElse(versionFormatError)
+}
 
 // To release run sbt release
 releaseProcess := Seq(
