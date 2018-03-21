@@ -7,8 +7,10 @@ import sbt._
 import xsbti.{Problem, Severity}
 
 import scala.collection.mutable.ArrayBuffer
+import scala.sys.process.Process
+import scala.sys.process.ProcessLogger
 import scala.util.{Failure, Success, Try}
-
+import scala.sys.process._
 
 object SbtElm extends AutoPlugin {
 
@@ -112,7 +114,7 @@ object SbtElm extends AutoPlugin {
 
       val hash = OpInputHash.hashString(
         (((elmExecutable in elmMake).value +: (elmOptions in elmMake).value)
-          ++ srcs :+ (elmOutput in elmMake).value).mkString("\0"))
+          ++ srcs :+ (elmOutput in elmMake).value).mkString("\u0000"))
 
       implicit val opInputHasher = OpInputHasher[Unit](_ => hash)
 
@@ -191,9 +193,9 @@ object SbtElm extends AutoPlugin {
   def logger = {
     val lineBuffer = new ArrayBuffer[String]
     val logger = new ProcessLogger {
-      override def info(s: => String) = lineBuffer += s
+      override def out(s: => String) = lineBuffer += s
 
-      override def error(s: => String) = lineBuffer += s
+      override def err(s: => String) = lineBuffer += s
 
       override def buffer[T](f: => T): T = f
     }

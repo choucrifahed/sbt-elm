@@ -1,3 +1,3 @@
 # Check if the elmMake task creates the output file
-> elm-make
+> elmMake
 $ exists target/web/elm/main/js/elmMain.js

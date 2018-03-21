@@ -29,7 +29,7 @@ pomExtra :=
       </developer>
     </developers>
 
-ScriptedPlugin.scriptedSettings
+ScriptedPlugin.globalSettings
 
 scriptedLaunchOpts ++= Seq("-Dplugin.version=" + version.value)
 
