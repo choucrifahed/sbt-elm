@@ -17,7 +17,7 @@ To use the latest from Github, add the following to the `project/plugins.sbt` of
 Then:
 
   * Put your Elm files (with extension `elm` into `src/main/assets/elm`)
-  * Run the `elm-make` task
+  * Run the `elmMake` task
   * Result is in `target/web/public/main/js`
 
 Or in a Play Framework project:
@@ -28,8 +28,8 @@ Or in a Play Framework project:
 
 There are other tasks available:
 
- * `elm-reactor` task allows you to run [Elm Reactor](https://github.com/elm-lang/elm-reactor) from SBT.
- * `elm-repl` task will run the Elm interpreter, with your sources loaded.
+ * `elmReactor` task allows you to run [Elm Reactor](https://github.com/elm-lang/elm-reactor) from SBT.
+ * `elmRepl` task will run the Elm interpreter, with your sources loaded.
 
 However, [Elm Package](https://github.com/elm-lang/elm-package) is not yet available from SBT to install packages, bump versions or publish your packages.
 
@@ -58,7 +58,7 @@ lazy val playModule2 = project
 
 Check the examples folder for example projects that use this plugin.
 
-## Adding arguments to elm-make
+## Adding arguments to elmMake
 
 This setting for example enables the debugger (Elm 0.18+)
 
