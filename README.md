@@ -7,7 +7,7 @@ It uses and follows the conventions of [sbt-web](https://github.com/sbt/sbt-web)
 
 To use a stable release, add the following to the `project/plugins.sbt` of your project:
 
-    addSbtPlugin("io.finstack" % "sbt-elm" % "0.1.2")
+    addSbtPlugin("io.finstack" % "sbt-elm" % "0.1.3")
 
 To use the latest from Github, add the following to the `project/plugins.sbt` of your project:
 
