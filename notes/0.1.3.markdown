@@ -1,0 +1,1 @@
+* Update to SBT 1.1.2, Scala 2.12.4 and Play 2.6.12
