@@ -37,12 +37,16 @@ init =
 
 type Msg
     = IncrementServerCounter
+    | Reset
     | ServerCounterUpdated (Result Http.Error Int)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
+        Reset ->
+             ( model, reset )
+
         IncrementServerCounter ->
             ( model, incrementCounterServer )
 
@@ -61,6 +65,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ button [ onClick IncrementServerCounter ] [ text "Increment Server" ]
+        , button [ onClick Reset ] [ text "Reset" ]
         , div [] [ text (toString model.counter) ]
         , div [] [ text (Maybe.withDefault "" model.error) ]
         ]
@@ -83,7 +88,11 @@ incrementCounterServer : Cmd Msg
 incrementCounterServer =
     Http.send ServerCounterUpdated (Http.get "/count" decodeCounter)
 
+reset : Cmd Msg
+reset =
+    Http.send ServerCounterUpdated (Http.get "/reset" decodeCounter)
 
 decodeCounter : Json.Decoder Int
 decodeCounter =
     Json.at [ "counter" ] Json.int
+
