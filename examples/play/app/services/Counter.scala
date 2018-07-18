@@ -31,6 +31,6 @@ class AtomicCounter extends Counter {
 
   override def reset(): Int = {
     atomicCounter.set(0)
-    0
+    atomicCounter.getAndIncrement()
   }
 }
