@@ -1,7 +1,9 @@
 package controllers
 
 import javax.inject._
+import play.api._
 import play.api.mvc._
+
 import services.Counter
 
 /**
@@ -11,8 +13,7 @@ import services.Counter
   * object is injected by the Guice dependency injection system.
   */
 @Singleton
-class CountController @Inject()(counter: Counter)
-  extends InjectedController {
+class CountController @Inject()(counter: Counter) extends InjectedController {
 
   /**
     * Create an action that responds with the [[Counter]]'s current
@@ -22,10 +23,6 @@ class CountController @Inject()(counter: Counter)
   def count = Action {
     val count = counter.nextCount()
     Ok(s"""{ "counter": $count }""")
-  }
-
-  def reset = Action {
-    Ok(s"""{ "counter": ${counter.reset()}}""")
   }
 
 }

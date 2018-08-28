@@ -19,4 +19,3 @@ project/plugins/project/
 # Intellij
 .idea/*
 elm-stuff/
-*.iml
