@@ -1,1 +1,2 @@
-addSbtPlugin("io.finstack" % "sbt-elm" % sys.props("plugin.version"))
+lazy val root = project.in(file(".")).dependsOn(elmPlugin)
+lazy val elmPlugin = ClasspathDependency(RootProject(file("../../../../..")), None)

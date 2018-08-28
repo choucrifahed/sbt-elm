@@ -10,6 +10,8 @@ import javax.inject._
  */
 trait Counter {
   def nextCount(): Int
+
+  def reset(): Int
 }
 
 /**
@@ -26,4 +28,9 @@ trait Counter {
 class AtomicCounter extends Counter {  
   private val atomicCounter = new AtomicInteger()
   override def nextCount(): Int = atomicCounter.getAndIncrement()
+
+  override def reset(): Int = {
+    atomicCounter.set(0)
+    atomicCounter.getAndIncrement()
+  }
 }
