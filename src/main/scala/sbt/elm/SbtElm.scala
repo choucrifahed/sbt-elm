@@ -120,7 +120,7 @@ object SbtElm extends AutoPlugin {
   val baseElmSettings = Seq(
     // Elm Make
     elmExecutable in elmMake := "elm make",
-    elmOptions in elmMake := Seq("--warn", "--yes"),
+    elmOptions in elmMake := Seq(),
     elmOutput in elmMake := (resourceManaged in elmMake).value / "js" / "elmMain.js",
     includeFilter in elmMake := "*.elm",
     sources in elmMake := ((sourceDirectories in elmMake).value **
@@ -201,7 +201,7 @@ object SbtElm extends AutoPlugin {
 
   def doCompile(command: Seq[String], sourceFiles: Seq[File]): Seq[Problem] = {
     val (buffer, pscLogger) = logger
-    val exitStatus = command ! pscLogger
+    val exitStatus = command.mkString(" ") ! pscLogger
     if (exitStatus != 0) PscOutputParser.readProblems(buffer mkString "\n", sourceFiles).get
     else Nil
   }
