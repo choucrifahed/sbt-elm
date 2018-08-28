@@ -18,26 +18,42 @@ object SbtElm extends AutoPlugin {
 
     object ElmKeys {
       /*
-        Usage: elm-make [FILES...] [--output FILE] [--yes] [--report FORMAT] [--warn]
-                        [--docs FILE] [--prepublish] [--prepublish-core]
-          build Elm projects
+        The `make` command compiles Elm code into JS or HTML:
 
-        Available options:
-          -h,--help                Show this help text
-          --output FILE            Write result to the given .html or .js FILE.
-          --yes                    Reply 'yes' to all automated prompts.
-          --report FORMAT          Format of error and warning reports (e.g.
-                                   --report=json)
-          --warn                   Report warnings to improve code quality.
-          --docs FILE              Write documentation to FILE as JSON.
+            elm make <zero-or-more-elm-files>
 
-        Examples:
-          elm-make Main.elm                     # compile to HTML in index.html
-          elm-make Main.elm --output main.html  # compile to HTML in main.html
-          elm-make Main.elm --output elm.js     # compile to JS in elm.js
-          elm-make Main.elm --warn              # compile and report warnings
+        For example:
 
-        Full guide to using elm-make at <https://github.com/elm-lang/elm-make>
+            elm make src/Main.elm
+
+        This tries to compile an Elm file named src/Main.elm, putting the resulting
+        JavaScript code in an elm.js file.
+
+        You can customize this command with the following flags:
+
+            --debug
+                Turn on the time-travelling debugger. It allows you to rewind and replay
+                events. The events can be imported/exported into a file, which makes for
+                very precise bug reports!
+
+            --optimize
+                Turn on optimizations to make code smaller and faster. For example, the
+                compiler renames record fields to be as short as possible and unboxes
+                values to reduce allocation.
+
+            --output=<output-file>
+                Specify the name of the resulting JS file. For example
+                --output=assets/elm.js to generate the JS at assets/elm.js or
+                --output=/dev/null to generate no output at all!
+
+            --report=<report-type>
+                You can say --report=json to get error messages as JSON. This is only
+                really useful if you are an editor plugin. Humans should avoid it!
+
+            --docs=<json-file>
+                Generate a JSON file of documentation for a package. Eventually it will
+                be possible to preview docs with `reactor` because it is quite hard to
+                deal with these JSON files directly.
        */
       val elmMake = TaskKey[Seq[File]]("elm-make", "Compile an Elm file or project into JS or HTML.")
 
@@ -103,7 +119,7 @@ object SbtElm extends AutoPlugin {
 
   val baseElmSettings = Seq(
     // Elm Make
-    elmExecutable in elmMake := "elm-make",
+    elmExecutable in elmMake := "elm make",
     elmOptions in elmMake := Seq("--warn", "--yes"),
     elmOutput in elmMake := (resourceManaged in elmMake).value / "js" / "elmMain.js",
     includeFilter in elmMake := "*.elm",
@@ -148,7 +164,7 @@ object SbtElm extends AutoPlugin {
     },*/
 
     // Elm Reactor
-    elmExecutable in elmReactor := "elm-reactor",
+    elmExecutable in elmReactor := "elm reactor",
     elmOptions in elmReactor := Nil,
     elmReactor := {
       val command = (elmExecutable in elmReactor).value +: (elmOptions in elmReactor).value
@@ -156,7 +172,7 @@ object SbtElm extends AutoPlugin {
     },
 
     // Elm REPL
-    elmExecutable in elmRepl := "elm-repl",
+    elmExecutable in elmRepl := "elm repl",
     elmOptions in elmRepl := Nil,
     elmRepl := {
       val command = (elmExecutable in elmRepl).value +: (elmOptions in elmRepl).value
