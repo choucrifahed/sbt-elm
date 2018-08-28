@@ -54,8 +54,16 @@ update msg model =
             ( { model | counter = newCounter, error = Nothing }, Cmd.none )
 
         ServerCounterUpdated (Err newError) ->
-            ( { model | error = Just <| "newError" }, Cmd.none )
+            ( { model | error = Just <| (httpErrorToString newError) }, Cmd.none )
 
+httpErrorToString: Http.Error -> String
+httpErrorToString err =
+    case err of
+        Http.BadUrl msg -> "BadUrl " ++ msg
+        Http.Timeout -> "Timeout"
+        Http.NetworkError -> "NetworkError"
+        Http.BadStatus _ -> "BadStatus"
+        Http.BadPayload msg _ -> "BadPayload " ++ msg
 
 
 -- VIEW
@@ -66,7 +74,7 @@ view model =
     div []
         [ button [ onClick IncrementServerCounter ] [ text "Increment Server" ]
         , button [ onClick Reset ] [ text "Reset" ]
-        , div [] [ text ("model.counter") ]
+        , div [] [ text (String.fromInt model.counter) ]
         , div [] [ text (Maybe.withDefault "" model.error) ]
         ]
 
