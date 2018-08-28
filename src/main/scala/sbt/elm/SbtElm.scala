@@ -58,47 +58,41 @@ object SbtElm extends AutoPlugin {
       val elmMake = TaskKey[Seq[File]]("elm-make", "Compile an Elm file or project into JS or HTML.")
 
       /*
-        Usage: elm-package COMMAND
-          install and publish elm packages
+        The `reactor` command starts a local server on your computer:
 
-        Available commands:
-          install                  Install packages to use locally
-          publish                  Publish your package to the central catalog
-          bump                     Bump version numbers based on API changes
-          diff                     Get differences between two APIs
+            elm reactor
 
-        To learn more about a particular command run:
-          elm-package COMMAND --help
-       */
-      // FIXME this task is useless if one cannot pass parameters
-      // val elmPackage = InputKey[Unit]("elm-package", "Manage Elm packages from <http://package.elm-lang.org>.")
+        After running that command, you would have a server at <http://localhost:8000>
+        that helps with development. It shows your files like a file viewer. If you
+        click on an Elm file, it will compile it for you! And you can just press the
+        refresh button in the browser to recompile things.
 
-      /*
-        Interactive development tool that makes it easy to develop and debug Elm
-        programs.
-            Read more about it at <https://github.com/elm-lang/elm-reactor>.
+        You can customize this command with the following flags:
 
-        Common flags:
-        -a --address=ADDRESS  set the address of the server (e.g. look into 0.0.0.0
-                              if you want to try stuff on your phone)
-        -p --port=INT         set the port of the reactor (default: 8000)
-        -h --help             Display help message
-        -v --version          Print version information
-           --numeric-version  Print just the version number
+            --port=<port>
+                The port of the server (default: 8000)
        */
       val elmReactor = TaskKey[Unit]("elm-reactor", "Develop with compile-on-refresh and time-travel debugging for Elm.")
 
       /*
-        Read-eval-print-loop (REPL) for digging deep into Elm projects.
-        More info at <https://github.com/elm-lang/elm-repl#elm-repl>
+        The `repl` command opens up an interactive programming session:
 
-        Common flags:
-        -c --compiler=FILE     Provide a path to a specific version of elm-make.
-        -i --interpreter=FILE  Provide a path to a specific JavaScript interpreter
-                               (e.g. node, nodejs, ...).
-        -h --help              Display help message
-        -v --version           Print version information
-           --numeric-version   Print just the version number
+            elm repl
+
+        Start working through <https://guide.elm-lang.org> to learn how to use this! It
+        has a whole chapter that uses the REPL for everything, so that is probably the
+        quickest way to get started.
+
+        You can customize this command with the following flags:
+
+            --interpreter=<interpreter>
+                Path to a alternate JS interpreter, like node or nodejs.
+
+            --no-colors
+                Turn off the colors in the REPL. This can help if you are having trouble
+                reading the values. Some terminals use a custom color scheme that
+                diverges significantly from the standard ANSI colors, so another path
+                may be to pick a more standard color scheme.
        */
       val elmRepl = TaskKey[Unit]("elm-repl", "Elm REPL for running individual expressions.")
 
@@ -153,16 +147,6 @@ object SbtElm extends AutoPlugin {
       outs.toSeq
     },
 
-    // Elm Package
-    //elmExecutable in elmPackage := "elm-package",
-    //elmOptions in elmPackage := Nil,
-    // FIXME no clue of how input can be read!!!
-    /*elmPackage := {
-      val args = Def.spaceDelimited("<args>").parsed
-      val command = ((elmExecutable in elmPackage).value +: (elmOptions in elmPackage).value) ++ args
-      Process(command).run(true).exitValue()
-    },*/
-
     // Elm Reactor
     elmExecutable in elmReactor := "elm reactor",
     elmOptions in elmReactor := Nil,
@@ -194,7 +178,6 @@ object SbtElm extends AutoPlugin {
       )
     ) ++ */ Seq(
       elmMake := (elmMake in Assets).value,
-      // FIXME elmPackage := (elmPackage in Assets).value,
       elmReactor := (elmReactor in Assets).value,
       elmRepl := (elmRepl in Assets).value
     )
