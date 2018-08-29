@@ -1,14 +1,14 @@
 module ServerCounter exposing (..)
 
+import Browser
 import Html exposing (..)
 import Html.Events exposing (onClick)
 import Http
 import Json.Decode as Json
 
 
-main : Program Never Model Msg
 main =
-    program
+    Browser.element
         { init = init
         , view = view
         , update = update
@@ -26,8 +26,8 @@ type alias Model =
     }
 
 
-init : ( Model, Cmd Msg )
-init =
+init : () -> ( Model, Cmd Msg )
+init _ =
     ( Model 0 Nothing, incrementCounterServer )
 
 
@@ -50,8 +50,16 @@ update msg model =
             ( { model | counter = newCounter, error = Nothing }, Cmd.none )
 
         ServerCounterUpdated (Err newError) ->
-            ( { model | error = Just <| toString newError }, Cmd.none )
+            ( { model | error = Just <| (httpErrorToString newError) }, Cmd.none )
 
+httpErrorToString: Http.Error -> String
+httpErrorToString err =
+    case err of
+        Http.BadUrl msg -> "BadUrl " ++ msg
+        Http.Timeout -> "Timeout"
+        Http.NetworkError -> "NetworkError"
+        Http.BadStatus _ -> "BadStatus"
+        Http.BadPayload msg _ -> "BadPayload " ++ msg
 
 
 -- VIEW
@@ -61,7 +69,7 @@ view : Model -> Html Msg
 view model =
     div []
         [ button [ onClick IncrementServerCounter ] [ text "Increment Server" ]
-        , div [] [ text (toString model.counter) ]
+        , div [] [ text (String.fromInt model.counter) ]
         , div [] [ text (Maybe.withDefault "" model.error) ]
         ]
 
