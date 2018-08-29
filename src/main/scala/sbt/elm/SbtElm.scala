@@ -18,71 +18,81 @@ object SbtElm extends AutoPlugin {
 
     object ElmKeys {
       /*
-        Usage: elm-make [FILES...] [--output FILE] [--yes] [--report FORMAT] [--warn]
-                        [--docs FILE] [--prepublish] [--prepublish-core]
-          build Elm projects
+        The `make` command compiles Elm code into JS or HTML:
 
-        Available options:
-          -h,--help                Show this help text
-          --output FILE            Write result to the given .html or .js FILE.
-          --yes                    Reply 'yes' to all automated prompts.
-          --report FORMAT          Format of error and warning reports (e.g.
-                                   --report=json)
-          --warn                   Report warnings to improve code quality.
-          --docs FILE              Write documentation to FILE as JSON.
+            elm make <zero-or-more-elm-files>
 
-        Examples:
-          elm-make Main.elm                     # compile to HTML in index.html
-          elm-make Main.elm --output main.html  # compile to HTML in main.html
-          elm-make Main.elm --output elm.js     # compile to JS in elm.js
-          elm-make Main.elm --warn              # compile and report warnings
+        For example:
 
-        Full guide to using elm-make at <https://github.com/elm-lang/elm-make>
+            elm make src/Main.elm
+
+        This tries to compile an Elm file named src/Main.elm, putting the resulting
+        JavaScript code in an elm.js file.
+
+        You can customize this command with the following flags:
+
+            --debug
+                Turn on the time-travelling debugger. It allows you to rewind and replay
+                events. The events can be imported/exported into a file, which makes for
+                very precise bug reports!
+
+            --optimize
+                Turn on optimizations to make code smaller and faster. For example, the
+                compiler renames record fields to be as short as possible and unboxes
+                values to reduce allocation.
+
+            --output=<output-file>
+                Specify the name of the resulting JS file. For example
+                --output=assets/elm.js to generate the JS at assets/elm.js or
+                --output=/dev/null to generate no output at all!
+
+            --report=<report-type>
+                You can say --report=json to get error messages as JSON. This is only
+                really useful if you are an editor plugin. Humans should avoid it!
+
+            --docs=<json-file>
+                Generate a JSON file of documentation for a package. Eventually it will
+                be possible to preview docs with `reactor` because it is quite hard to
+                deal with these JSON files directly.
        */
       val elmMake = TaskKey[Seq[File]]("elm-make", "Compile an Elm file or project into JS or HTML.")
 
       /*
-        Usage: elm-package COMMAND
-          install and publish elm packages
+        The `reactor` command starts a local server on your computer:
 
-        Available commands:
-          install                  Install packages to use locally
-          publish                  Publish your package to the central catalog
-          bump                     Bump version numbers based on API changes
-          diff                     Get differences between two APIs
+            elm reactor
 
-        To learn more about a particular command run:
-          elm-package COMMAND --help
-       */
-      // FIXME this task is useless if one cannot pass parameters
-      // val elmPackage = InputKey[Unit]("elm-package", "Manage Elm packages from <http://package.elm-lang.org>.")
+        After running that command, you would have a server at <http://localhost:8000>
+        that helps with development. It shows your files like a file viewer. If you
+        click on an Elm file, it will compile it for you! And you can just press the
+        refresh button in the browser to recompile things.
 
-      /*
-        Interactive development tool that makes it easy to develop and debug Elm
-        programs.
-            Read more about it at <https://github.com/elm-lang/elm-reactor>.
+        You can customize this command with the following flags:
 
-        Common flags:
-        -a --address=ADDRESS  set the address of the server (e.g. look into 0.0.0.0
-                              if you want to try stuff on your phone)
-        -p --port=INT         set the port of the reactor (default: 8000)
-        -h --help             Display help message
-        -v --version          Print version information
-           --numeric-version  Print just the version number
+            --port=<port>
+                The port of the server (default: 8000)
        */
       val elmReactor = TaskKey[Unit]("elm-reactor", "Develop with compile-on-refresh and time-travel debugging for Elm.")
 
       /*
-        Read-eval-print-loop (REPL) for digging deep into Elm projects.
-        More info at <https://github.com/elm-lang/elm-repl#elm-repl>
+        The `repl` command opens up an interactive programming session:
 
-        Common flags:
-        -c --compiler=FILE     Provide a path to a specific version of elm-make.
-        -i --interpreter=FILE  Provide a path to a specific JavaScript interpreter
-                               (e.g. node, nodejs, ...).
-        -h --help              Display help message
-        -v --version           Print version information
-           --numeric-version   Print just the version number
+            elm repl
+
+        Start working through <https://guide.elm-lang.org> to learn how to use this! It
+        has a whole chapter that uses the REPL for everything, so that is probably the
+        quickest way to get started.
+
+        You can customize this command with the following flags:
+
+            --interpreter=<interpreter>
+                Path to a alternate JS interpreter, like node or nodejs.
+
+            --no-colors
+                Turn off the colors in the REPL. This can help if you are having trouble
+                reading the values. Some terminals use a custom color scheme that
+                diverges significantly from the standard ANSI colors, so another path
+                may be to pick a more standard color scheme.
        */
       val elmRepl = TaskKey[Unit]("elm-repl", "Elm REPL for running individual expressions.")
 
@@ -103,8 +113,8 @@ object SbtElm extends AutoPlugin {
 
   val baseElmSettings = Seq(
     // Elm Make
-    elmExecutable in elmMake := "elm-make",
-    elmOptions in elmMake := Seq("--warn", "--yes"),
+    elmExecutable in elmMake := "elm make",
+    elmOptions in elmMake := Seq(),
     elmOutput in elmMake := (resourceManaged in elmMake).value / "js" / "elmMain.js",
     includeFilter in elmMake := "*.elm",
     sources in elmMake := ((sourceDirectories in elmMake).value **
@@ -137,18 +147,8 @@ object SbtElm extends AutoPlugin {
       outs.toSeq
     },
 
-    // Elm Package
-    //elmExecutable in elmPackage := "elm-package",
-    //elmOptions in elmPackage := Nil,
-    // FIXME no clue of how input can be read!!!
-    /*elmPackage := {
-      val args = Def.spaceDelimited("<args>").parsed
-      val command = ((elmExecutable in elmPackage).value +: (elmOptions in elmPackage).value) ++ args
-      Process(command).run(true).exitValue()
-    },*/
-
     // Elm Reactor
-    elmExecutable in elmReactor := "elm-reactor",
+    elmExecutable in elmReactor := "elm reactor",
     elmOptions in elmReactor := Nil,
     elmReactor := {
       val command = (elmExecutable in elmReactor).value +: (elmOptions in elmReactor).value
@@ -156,7 +156,7 @@ object SbtElm extends AutoPlugin {
     },
 
     // Elm REPL
-    elmExecutable in elmRepl := "elm-repl",
+    elmExecutable in elmRepl := "elm repl",
     elmOptions in elmRepl := Nil,
     elmRepl := {
       val command = (elmExecutable in elmRepl).value +: (elmOptions in elmRepl).value
@@ -178,14 +178,13 @@ object SbtElm extends AutoPlugin {
       )
     ) ++ */ Seq(
       elmMake := (elmMake in Assets).value,
-      // FIXME elmPackage := (elmPackage in Assets).value,
       elmReactor := (elmReactor in Assets).value,
       elmRepl := (elmRepl in Assets).value
     )
 
   def doCompile(command: Seq[String], sourceFiles: Seq[File]): Seq[Problem] = {
     val (buffer, pscLogger) = logger
-    val exitStatus = command ! pscLogger
+    val exitStatus = command.mkString(" ") ! pscLogger
     if (exitStatus != 0) PscOutputParser.readProblems(buffer mkString "\n", sourceFiles).get
     else Nil
   }
