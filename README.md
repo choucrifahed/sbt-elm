@@ -6,8 +6,13 @@ It uses and follows the conventions of [sbt-web](https://github.com/sbt/sbt-web)
 ## Usage
 
 To use a stable release, add the following to the `project/plugins.sbt` of your project:
+If you are using Elm 0.18:
 
     addSbtPlugin("io.finstack" % "sbt-elm" % "0.1.3")
+
+If you are using Elm 0.19:
+
+    addSbtPlugin("io.finstack" % "sbt-elm" % "0.2.0")
 
 To use the latest from Github, add the following to the `project/plugins.sbt` of your project:
 

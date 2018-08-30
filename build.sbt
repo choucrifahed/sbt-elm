@@ -2,7 +2,6 @@ import com.typesafe.sbt.SbtGit.GitKeys._
 import sbtrelease._
 import sbtrelease.ReleaseStateTransformations.{setReleaseVersion => _, _}
 
-sbtPlugin := true
 
 organization := "io.finstack"
 
@@ -29,7 +28,7 @@ pomExtra :=
       </developer>
     </developers>
 
-ScriptedPlugin.globalSettings
+enablePlugins(SbtPlugin)
 
 scriptedLaunchOpts ++= Seq("-Dplugin.version=" + version.value)
 

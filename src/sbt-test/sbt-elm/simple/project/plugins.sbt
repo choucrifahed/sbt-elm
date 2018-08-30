@@ -1,2 +1,5 @@
-lazy val root = project.in(file(".")).dependsOn(elmPlugin)
-lazy val elmPlugin = ClasspathDependency(RootProject(file("../../../../..")), None)
+sys.props.get("plugin.version") match {
+  case Some(x) => addSbtPlugin("io.finstack" % "sbt-elm" % x)
+  case _ => sys.error("""|The system property 'plugin.version' is not defined.
+                         |Specify this property using the scriptedLaunchOpts -D.""".stripMargin)
+}

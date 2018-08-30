@@ -1,0 +1,7 @@
+Special thanks to Renārs Kudiņš (@retriku)! This release contains:
+
+* Update to Elm 0.19.0
+* Update to SBT 1.2.1
+* Update to Scala 2.12.6
+* Update to Play 2.16.18
+* Add support for Java 9
