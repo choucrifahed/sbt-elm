@@ -8,16 +8,22 @@ It uses and follows the conventions of [sbt-web](https://github.com/sbt/sbt-web)
 To use a stable release, add the following to the `project/plugins.sbt` of your project:
 If you are using Elm 0.18:
 
-    addSbtPlugin("io.finstack" % "sbt-elm" % "0.1.3")
+```scala
+addSbtPlugin("io.finstack" % "sbt-elm" % "0.1.3")
+```
 
 If you are using Elm 0.19:
 
-    addSbtPlugin("io.finstack" % "sbt-elm" % "0.2.0")
+```scala
+addSbtPlugin("io.finstack" % "sbt-elm" % "0.2.0")
+```
 
 To use the latest from Github, add the following to the `project/plugins.sbt` of your project:
 
-    lazy val root = project.in(file(".")).dependsOn(sbtElm)
-    lazy val sbtElm = uri("https://github.com/choucrifahed/sbt-elm.git")
+```scala
+lazy val root = project.in(file(".")).dependsOn(sbtElm)
+lazy val sbtElm = uri("https://github.com/choucrifahed/sbt-elm.git")
+```    
 
 Then:
 
@@ -42,7 +48,7 @@ However, [Elm Package](https://github.com/elm-lang/elm-package) is not yet avail
 
 Unfortunately, the current version of the plugin does not support multiple Play sub-modules. Therefore you can only have SbtElm enabled for a single module (see #2 for more details). The example below shows how to do this:
 
-```
+```scala
 // in project/plugins.sbt: addSbtPlugin("io.finstack" % "sbt-elm" % "x.y.z")
 
 // then in build.sbt
@@ -67,7 +73,7 @@ Check the examples folder for example projects that use this plugin.
 
 This setting for example enables the debugger (Elm 0.18+)
 
-```
+```scala
 (ElmKeys.elmOptions in ElmKeys.elmMake in Assets) ++= Seq("--debug")
 ```
 
