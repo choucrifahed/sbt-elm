@@ -11,7 +11,7 @@ name := "sbt-elm"
 
 scalacOptions += "-feature"
 
-addSbtPlugin("com.typesafe.sbt" % "sbt-web" % "1.4.3")
+addSbtPlugin("com.typesafe.sbt" % "sbt-web" % "1.4.4")
 
 licenses += ("MIT", url("http://opensource.org/licenses/MIT"))
 
