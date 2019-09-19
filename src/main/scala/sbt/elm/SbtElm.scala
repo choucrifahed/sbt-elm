@@ -7,6 +7,7 @@ import sbt._
 import xsbti.{Problem, Severity}
 
 import scala.collection.mutable.ArrayBuffer
+import scala.io.StdIn
 import scala.sys.process.Process
 import scala.sys.process.ProcessLogger
 import scala.util.{Failure, Success, Try}
@@ -148,19 +149,32 @@ object SbtElm extends AutoPlugin {
     },
 
     // Elm Reactor
-    elmExecutable in elmReactor := "elm reactor",
+    elmExecutable in elmReactor := "elm",
     elmOptions in elmReactor := Nil,
     elmReactor := {
-      val command = (elmExecutable in elmReactor).value +: (elmOptions in elmReactor).value
-      Process(command).run(true).exitValue()
+      val log = streams.value.log
+      val command = (elmExecutable in elmReactor).value
+      val args = Seq("reactor") ++ (elmOptions in elmReactor).value
+      // not sure why output is not shown
+      log.info(s"running [$command ${args.mkString("")}] (output might be missing/delayed, check http://localhost:8000)")
+      log.info("press enter to stop...")
+      val process = Process(command, args).run(log)
+      val _ = StdIn.readLine()
+      process.destroy()
+      val exitValue = process.exitValue()
+      if(exitValue != 0 && exitValue != 143){
+        log.error(s"process exited with $exitValue")
+      }
     },
 
     // Elm REPL
-    elmExecutable in elmRepl := "elm repl",
+    elmExecutable in elmRepl := "elm",
     elmOptions in elmRepl := Nil,
     elmRepl := {
-      val command = (elmExecutable in elmRepl).value +: (elmOptions in elmRepl).value
-      Process(command).run(true).exitValue()
+      val log = streams.value.log
+      val command = (elmExecutable in elmRepl).value
+      val args = Seq("repl") ++ (elmOptions in elmRepl).value
+      Process(command, args).run(log, connectInput = true).exitValue()
     },
 
     resourceGenerators += elmMake.taskValue)
